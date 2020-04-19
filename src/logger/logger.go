@@ -41,7 +41,7 @@ func (l *logger) logPrintln(level int, v ...interface{}) {
 	//打开日志文件
 	fp, err := l.getFp()
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 	defer fp.Close()
 
@@ -51,7 +51,7 @@ func (l *logger) logPrintln(level int, v ...interface{}) {
 	//生成调用文件名和行号的简短形式
 	short, err := l.getShort(3)
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 
 	//重组
@@ -73,7 +73,7 @@ func (l *logger) logPrintf(level int, format string, v ...interface{}) {
 	//打开日志文件
 	fp, err := l.getFp()
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 	defer fp.Close()
 
@@ -83,7 +83,7 @@ func (l *logger) logPrintf(level int, format string, v ...interface{}) {
 	//生成调用文件名和行号的简短形式
 	short, err := l.getShort(3)
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 
 	//重组
@@ -118,7 +118,9 @@ func (l *logger) getFp() (fp *os.File, err error) {
 	}
 
 	//日志文件分割
-	l.splitFile(f)
+	if err = l.splitFile(f); err != nil {
+		return
+	}
 
 	//打开文件，不存在则新建
 	fp, err = os.OpenFile(f, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0664)
@@ -127,10 +129,10 @@ func (l *logger) getFp() (fp *os.File, err error) {
 
 //日志文件分割
 //file为日志文件绝对路径文件名
-func (l *logger) splitFile(file string) {
+func (l *logger) splitFile(file string) error {
 	fileInfo, err := os.Stat(file)
 	if err != nil {
-		return
+		return err
 	}
 
 	//日志文件分割大小，默认50*1024*1024字节
@@ -145,9 +147,10 @@ func (l *logger) splitFile(file string) {
 		time := fmt.Sprintf("%02d%02d%02d", t.Hour(), t.Minute(), t.Second())
 		tmp := file + "." + date + "." + time
 		if err := os.Rename(file, tmp); err != nil {
-			return
+			return err
 		}
 	}
+	return nil
 }
 
 //生成日志行首描述字符

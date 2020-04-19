@@ -5,20 +5,16 @@ import (
 	"logger"
 )
 
-//handleFunc类型
-type handleFunc func([]byte) []byte
-
 //router对象
 type router struct {
-	route map[string]handleFunc
+	route map[string]func([]byte) []byte
 }
 
 //router实例handle方法
 func (r *router) handle(inBuf []byte) (outBuf []byte) {
 	//入参检查
 	if nil == inBuf || len(inBuf) <= 0 {
-		logger.Println(logger.Error, "非法入参")
-		return
+		panic("非法入参")
 	}
 
 	//交易码数据结构
@@ -36,10 +32,10 @@ func (r *router) handle(inBuf []byte) (outBuf []byte) {
 	logger.Printf(logger.Info, "交易码%s", t.TransCode)
 
 	//调用业务处理函数
-	if h, ok := r.route[t.TransCode]; !ok {
+	h, ok := r.route[t.TransCode]
+	if !ok {
 		outBuf = []byte("非法交易")
-	} else {
-		outBuf = h(inBuf)
 	}
+	outBuf = h(inBuf)
 	return
 }

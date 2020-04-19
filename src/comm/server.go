@@ -14,23 +14,20 @@ type handler interface {
 }
 
 //默认handler
-var defaultHandler = &router{make(map[string]handleFunc)}
+var defaultHandler = &router{make(map[string]func([]byte) []byte)}
 
 //默认handler注册函数
-func HandleFunc(k string, f func([]byte) []byte) {
+func HandlerFunc(k string, f func([]byte) []byte) {
 	//入参检查
 	if "" == k || nil == f {
-		logger.Println(logger.Error, "非法入参")
-		return
+		panic("非法入参")
 	}
 
 	//注册函数
 	if _, ok := defaultHandler.route[k]; ok {
-		logger.Printf(logger.Error, "重复注册")
-		return
-	} else {
-		defaultHandler.route[k] = f
+		panic("重复注册")
 	}
+	defaultHandler.route[k] = f
 }
 
 //Server对象
@@ -58,8 +55,7 @@ type Server struct {
 func Run(addr ...string) {
 	//入参检查
 	if len(addr) > 1 {
-		logger.Println(logger.Error, "调用方法：Run(addr)，addr选送")
-		return
+		panic("调用方法：Run(addr)，addr选送")
 	}
 
 	//实例化Server
@@ -97,8 +93,7 @@ func (s *Server) serve() {
 	}
 	l, err := net.Listen("tcp", s.Addr)
 	if err != nil {
-		logger.Println(logger.Error, err)
-		return
+		panic(err)
 	}
 	defer l.Close()
 	logger.Println(logger.Info, "listen running on", s.Addr)
@@ -126,8 +121,7 @@ func (s *Server) serve() {
 				time.Sleep(tempDelay)
 				continue
 			} else {
-				logger.Println(logger.Error, err)
-				return
+				panic(err)
 			}
 		}
 
@@ -173,8 +167,7 @@ func (c *conn) serve() {
 	}
 	t := time.Now().Add(c.server.ConnTimeout)
 	if err := c.rwc.SetDeadline(t); err != nil {
-		logger.Println(logger.Error, err)
-		return
+		panic(err)
 	}
 
 	//通讯开始时间
@@ -186,8 +179,7 @@ func (c *conn) serve() {
 
 	//读取客户端请求
 	if err := c.readConn(); err != nil {
-		logger.Println(logger.Error, err)
-		return
+		panic(err)
 	}
 
 	//处理客户端请求
@@ -198,8 +190,7 @@ func (c *conn) serve() {
 
 	//应答客户端请求
 	if err := c.writeConn(); err != nil {
-		logger.Println(logger.Error, err)
-		return
+		panic(err)
 	}
 
 	//通讯结束时间

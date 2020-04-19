@@ -1,2 +1,4 @@
 github.com/chenzhengyue/logger v0.0.0-20200417201020-0122311c54bb h1:RJwb/gkfH0d8s2H5JY7Ol5290o9QqPdqND4jxfvEVOI=
 github.com/chenzhengyue/logger v0.0.0-20200417201020-0122311c54bb/go.mod h1:QHl3N7WXKoOGflDRQi1ABvY9FZbfuSYqs0J6kHpxKfg=
+github.com/go-sql-driver/mysql v1.5.0 h1:ozyZYNQW3x3HtqT1jira07DN2PArx2v7/mN66gGcHOs=
+github.com/go-sql-driver/mysql v1.5.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
