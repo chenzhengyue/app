@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/chenzhengyue/logger"
+	"logger"
 )
 
 type I1001 struct {
