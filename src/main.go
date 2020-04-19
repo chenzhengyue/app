@@ -14,10 +14,8 @@ func init() {
 }
 
 func main() {
-	logger.Println(logger.Info, "main begin")
 	//路由注册
 	comm.HandleFunc("1001", p1001)
-	logger.Println(logger.Debug, "main debug")
 
 	//启动服务
 	comm.Run()
