@@ -87,7 +87,7 @@ func (l *logger) logPrintf(level int, format string, v ...interface{}) {
 	}
 
 	//重组
-	format = short + format
+	format = short + " [" + format + "]"
 
 	//写日志
 	logger := log.New(fp, flag, log.Ldate|log.Ltime)

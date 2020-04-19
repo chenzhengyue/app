@@ -7,8 +7,8 @@ import (
 )
 
 type I1001 struct {
-	TxnCode string
-	Test    string
+	TransCode string
+	Test      string
 }
 
 type O1001 struct {
@@ -17,8 +17,8 @@ type O1001 struct {
 	Test string `json:"test"`
 }
 
-var pi1001 I1001
-var po1001 O1001
+var i1001 I1001
+var o1001 O1001
 
 func p1001(inBuf []byte) (outBuf []byte) {
 	//入参检查
@@ -28,7 +28,7 @@ func p1001(inBuf []byte) (outBuf []byte) {
 	}
 
 	//解析请求
-	if err := json.Unmarshal(inBuf, &pi1001); err != nil {
+	if err := json.Unmarshal(inBuf, &i1001); err != nil {
 		logger.Println(logger.Error, err)
 		return
 	}
@@ -36,14 +36,14 @@ func p1001(inBuf []byte) (outBuf []byte) {
 
 	//业务处理
 	logger.Println(logger.Info, "业务处理开始")
-	logger.Println(logger.Info, pi1001.TxnCode, pi1001.Test)
+	logger.Println(logger.Info, i1001.TransCode, i1001.Test)
 	logger.Println(logger.Info, "业务处理结束")
 
 	//构造应答
-	po1001.Ret = 0
-	po1001.Msg = "succ"
-	po1001.Test = fmt.Sprintf("hello %s %s", pi1001.TxnCode, pi1001.Test)
-	outBuf, err := json.Marshal(&po1001)
+	o1001.Ret = 0
+	o1001.Msg = "succ"
+	o1001.Test = fmt.Sprintf("hello %s %s", i1001.TransCode, i1001.Test)
+	outBuf, err := json.Marshal(&o1001)
 	if err != nil {
 		logger.Println(logger.Error, err)
 		return

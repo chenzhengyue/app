@@ -33,7 +33,7 @@ func (r *router) handle(inBuf []byte) (outBuf []byte) {
 		logger.Println(logger.Error, err)
 		return
 	}
-	logger.Printf(logger.Info, "交易码：%s\n", t.TransCode)
+	logger.Printf(logger.Info, "交易码%s", t.TransCode)
 
 	//调用业务处理函数
 	if h, ok := r.route[t.TransCode]; !ok {
