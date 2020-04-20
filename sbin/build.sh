@@ -1,4 +1,4 @@
-#app项目的编译脚本
+#app项目编译脚本
 curpwd=`pwd`
 cd $HOME/app/src/main
 go build -o app

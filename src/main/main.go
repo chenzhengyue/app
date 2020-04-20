@@ -3,7 +3,6 @@ package main
 import (
 	"comm"
 	"database/sql"
-	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"logger"
 	"os"
@@ -53,9 +52,9 @@ func setRouter() error {
 	}
 	defer rows.Close()
 
+	//读取路由表
 	var transCode string
 	var handler string
-	//读取路由表
 	for rows.Next() {
 		if err := rows.Scan(&transCode, &handler); err != nil {
 			return err
@@ -63,11 +62,6 @@ func setRouter() error {
 		logger.Println(logger.Info, transCode, handler)
 
 		//注册路由
-		var handlerFunc interface{} = handler
-		h, ok := handlerFunc.(func([]byte) []byte)
-		if !ok {
-			return fmt.Errorf("路由[%s]处理函数未实现[%s]", transCode, h)
-		}
 		comm.HandlerFunc(transCode, p1001)
 	}
 	if err = rows.Err(); err != nil {

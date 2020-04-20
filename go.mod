@@ -2,9 +2,9 @@ module app
 
 go 1.13
 
-replace comm => ./comm
+replace comm => ./src/comm
 
-replace logger => ./logger
+replace logger => ./src/logger
 
 require (
 	comm v0.0.0-00010101000000-000000000000
